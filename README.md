@@ -42,7 +42,51 @@ LionsSpace transforma esta experiencia con tres pilares clave:
 
 ---
 
-## 5. Navegación del Repositorio
+## 5. Problemas y Riesgos Potenciales
+
+1. **Riesgo de acceso y autorización (Soy León)**
+   - La universidad puede negar el acceso a API/base de datos o permitir solo campos muy limitados.
+   - La aprobación puede demorarse por revisiones legales y de seguridad.
+
+2. **Privacidad y cumplimiento legal**
+   - Los datos estudiantiles y académicos son sensibles.
+   - Puede requerirse permiso explícito, anonimización y manejo estricto de datos personales.
+
+3. **Ausencia de una interfaz oficial de integración**
+   - Si Soy León no tiene API pública, la integración puede depender de exportaciones manuales o soluciones inestables.
+   - Cambios en Soy León pueden romper la integración.
+
+4. **Calidad y consistencia de datos**
+   - Los datos externos pueden estar incompletos, desactualizados, duplicados o en formatos distintos.
+   - El mapeo de identificadores entre sistemas (ID de estudiante, ID de materia, etc.) puede fallar.
+
+5. **Dependencia de actores externos**
+   - El avance depende de respuestas del área de TI/administración de la universidad, no solo del ritmo de desarrollo.
+   - Esto puede bloquear hitos de forma inesperada.
+
+6. **Limitaciones de entorno para desarrollo/pruebas**
+   - Puede no existir un entorno sandbox o de pruebas.
+   - Probar con datos reales de producción puede estar restringido o prohibido.
+
+7. **Requisitos de seguridad fuera del alcance inicial**
+   - Si la integración es aprobada, puede exigir cifrado, auditoría, control por roles y revisiones de seguridad.
+   - Esto incrementa la complejidad y el tiempo de implementación.
+
+8. **Mantenimiento y soporte a largo plazo inciertos**
+   - Si LionsSpace depende fuertemente de Soy León y cambian las políticas, funcionalidades clave podrían dejar de operar.
+   - Futuros mantenedores pueden no contar con los mismos permisos de acceso.
+
+9. **Riesgo de cronograma para entrega académica**
+   - La negociación con la universidad puede tomar más tiempo que el semestre o calendario del proyecto.
+   - Puede ser necesario implementar funcionalidades de respaldo no dependientes de Soy León.
+
+10. **Riesgo de comunicación y documentación**
+    - Los requerimientos de la universidad pueden ser ambiguos o cambiar con el tiempo.
+    - La falta de documentación técnica formal de Soy León puede generar retrabajo.
+
+---
+
+## 6. Navegación del Repositorio
 
 Para conocer la documentación formal de la materia y la visión completa del producto, consulta:
 
