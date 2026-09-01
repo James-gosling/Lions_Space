@@ -32,7 +32,7 @@ Los alumnos recorren manualmente los pasillos y edificios esperando encontrar un
 | **SuperAdmin (TI Campus)** | Integrar el sistema de forma segura con los servicios existentes de la universidad ("Soy León" / SSO) evitando duplicidad de bases de datos. | Vulnerabilidades de seguridad en autenticación, degradación de servicios institucionales y asignación incorrecta de roles de acceso. |
 
 **Conflicto entre usuarios:**  
-El **Estudiante** busca flexibilidad para cancelar a último minuto si le surge un imprevisto sin recibir sanciones[cite: 3]. El **Administrador** requiere aplicar liberaciones automáticas estrictas por inasistencia y restringir reservas simultáneas para asegurar una rotación equitativa de los espacios para toda la comunidad[cite: 3].
+El **Estudiante** busca flexibilidad para cancelar a último minuto si le surge un imprevisto sin recibir sanciones. El **Administrador** requiere aplicar liberaciones automáticas estrictas por inasistencia y restringir reservas simultáneas para asegurar una rotación equitativa de los espacios para toda la comunidad.
 
 ---
 
@@ -48,23 +48,23 @@ El **Estudiante** busca flexibilidad para cancelar a último minuto si le surge 
 7. **Genera** reportes y métricas de ocupación e historial de uso para auditoría administrativa.
 
 ### 3.2 Explícitamente fuera del alcance (Exclusiones)
-1. **No controla cerraduras electrónicas ni detecta presencia física con hardware IoT:** El sistema no opera chapas magnéticas, torniquetes ni cámaras de presencia física[cite: 1, 3].
-2. **No procesa cobros ni transacciones monetarias:** No incluye pasarelas de pago, cobro de rentas ni penalizaciones económicas[cite: 1, 3].
-3. **No gestiona el inventario ni préstamo de equipo físico móvil:** No rastrea plumones, cables adaptadores ni monitores portátiles[cite: 1, 3].
+1. **No controla cerraduras electrónicas ni detecta presencia física con hardware IoT:** El sistema no opera chapas magnéticas, torniquetes ni cámaras de presencia física.
+2. **No procesa cobros ni transacciones monetarias:** No incluye pasarelas de pago, cobro de rentas ni penalizaciones económicas.
+3. **No gestiona el inventario ni préstamo de equipo físico móvil:** No rastrea plumones, cables adaptadores ni monitores portátiles.
 4. **No escribe ni altera datos escolares en sistemas centrales:** No modifica calificaciones, inscripciones ni expedientes académicos en las bases de datos de "Soy León" o SIU.
 
 ### 3.3 Justificación de exclusiones
-La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago responde a la necesidad de eliminar dependencias externas de hardware, compras y tiempos de instalación en instalaciones físicas que comprometerían la entrega técnica durante el semestre[cite: 1, 3]. LionsSpace se enfoca en resolver la orquestación lógica, la concurrencia y la equidad de acceso mediante software transaccional.
+La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago responde a la necesidad de eliminar dependencias externas de hardware, compras y tiempos de instalación en instalaciones físicas que comprometerían la entrega técnica durante el semestre. LionsSpace se enfoca en resolver la orquestación lógica, la concurrencia y la equidad de acceso mediante software transaccional.
 
 ### 3.4 Funcionalidad futura (Backlog fuera del semestre)
-* **Módulo de navegación interior (Indoor Wayfinding):** Guía interactiva paso a paso mediante mapa 2D/3D del campus para dirigir al estudiante desde su ubicación hacia el cubículo asignado[cite: 1, 3].
+* **Módulo de navegación interior (Indoor Wayfinding):** Guía interactiva paso a paso mediante mapa 2D/3D del campus para dirigir al estudiante desde su ubicación hacia el cubículo asignado.
 
 ---
 
 ## 4. Tipo de sistema y restricciones
 
 ### 4.1 Tipo de sistema
-**Sistema de Información Web Transaccional e Interactivo en Tiempo Real** bajo arquitectura cliente-servidor[cite: 1, 3]. Opera sincronizando estados sobre recursos físicos compartidos y finitos mediante transacciones concurrentes desde navegadores web móviles.
+**Sistema de Información Web Transaccional e Interactivo en Tiempo Real** bajo arquitectura cliente-servidor. Opera sincronizando estados sobre recursos físicos compartidos y finitos mediante transacciones concurrentes desde navegadores web móviles.
 
 ### 4.2 Atributos de calidad impuestos
 
@@ -79,7 +79,7 @@ La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago resp
 * **RN-01 (Membresía Activa):** Únicamente los usuarios validados con estatus académico activo pueden crear reservaciones.
 * **RN-02 (Ventana de Tolerancia para Check-in):** El check-in se habilita al minuto 0 de la reserva y expira al minuto 10. Si al minuto 11 no hay confirmación, el sistema ejecuta la cancelación automática y devuelve el espacio al catálogo público.
 * **RN-03 (Límite de Concurrencia por Usuario):** Un estudiante solo puede tener una única reserva activa o en curso a la vez para impedir el acaparamiento.
-* **RN-04 (Inmutabilidad de la Bitácora de Auditoría):** Todo evento de reserva, confirmación o cancelación genera un registro inmutable[cite: 3]. Los administradores solo pueden auditar los edificios asignados a su rol[cite: 3].
+* **RN-04 (Inmutabilidad de la Bitácora de Auditoría):** Todo evento de reserva, confirmación o cancelación genera un registro inmutable. Los administradores solo pueden auditar los edificios asignados a su rol.
 * **RN-05 (Mecanismo de Contingencia de Identidad):** Ante la falta de respuesta de la API externa de "Soy León", el sistema activa un modo de contingencia que valida el acceso mediante el dominio de correo electrónico institucional.
 
 ---
@@ -87,9 +87,9 @@ La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago resp
 ## 5. Ciclo de vida elegido
 
 ### 5.1 Modelo seleccionado
-**Modelo Iterativo e Incremental orientado a Riesgos (derivado del Proceso Unificado y Prototipado Rápido)**[cite: 1].
+**Modelo Iterativo e Incremental orientado a Riesgos (derivado del Proceso Unificado y Prototipado Rápido)**.
 
 ### 5.2 Justificación basada en el alcance y restricciones
-1. **Gestión de riesgos de integración externa:** La dependencia de la API de "Soy León" y las autorizaciones institucionales representan un riesgo crítico de cronograma[cite: 2]. Un modelo iterativo permite construir un primer incremento con un mecanismo de autenticación simulado (Mock / Fallback) para avanzar en la lógica transaccional de reservas sin quedar bloqueados por aprobaciones de terceros[cite: 2].
-2. **Validación temprana de usabilidad móvil y concurrencia:** El flujo de reserva y *check-in* en cambios de hora exige probar la interacción en dispositivos móviles con usuarios reales desde fases tempranas, ajustando la interfaz antes de la entrega final[cite: 1, 2, 3].
-3. **Por qué no Cascada:** Un modelo secuencial lineal asume requisitos completamente fijos y congelados desde el inicio[cite: 1]. Si se aplicara Cascada y los permisos de la API institucional se demoran o modifican en semanas avanzadas, el costo del cambio obligaría a rehacer la fase de diseño e implementación completa al final del semestre[cite: 1, 2].
+1. **Gestión de riesgos de integración externa:** La dependencia de la API de "Soy León" y las autorizaciones institucionales representan un riesgo crítico de cronograma. Un modelo iterativo permite construir un primer incremento con un mecanismo de autenticación simulado (Mock / Fallback) para avanzar en la lógica transaccional de reservas sin quedar bloqueados por aprobaciones de terceros.
+2. **Validación temprana de usabilidad móvil y concurrencia:** El flujo de reserva y *check-in* en cambios de hora exige probar la interacción en dispositivos móviles con usuarios reales desde fases tempranas, ajustando la interfaz antes de la entrega final.
+3. **Por qué no Cascada:** Un modelo secuencial lineal asume requisitos completamente fijos y congelados desde el inicio. Si se aplicara Cascada y los permisos de la API institucional se demoran o modifican en semanas avanzadas, el costo del cambio obligaría a rehacer la fase de diseño e implementación completa al final del semestre[cite: 1, 2].
