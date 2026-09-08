@@ -2,7 +2,7 @@
 
 **Autor:** Rodrigo Valdespino Vertiz  
 **Fecha:** Septiembre 2026  
-**Repositorio:** https://github.com/James-gosling/Lions_Space
+**Repositorio:** https://github.com/James-gosling/Lions_Space  
 
 ---
 
@@ -64,7 +64,11 @@ La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago resp
 ## 4. Tipo de sistema y restricciones
 
 ### 4.1 Tipo de sistema
-**Sistema de Información Web Transaccional e Interactivo en Tiempo Real** bajo arquitectura cliente-servidor. Opera sincronizando estados sobre recursos físicos compartidos y finitos mediante transacciones concurrentes desde navegadores web móviles.
+**Aplicación Web Transaccional estructurada en Arquitectura de 3 Capas**.  
+El sistema desacopla sus responsabilidades para mantener modularidad, mantenibilidad y seguridad:
+1. **Capa de Presentación (Frontend):** Interfaz web ligera adaptada a navegadores móviles y de escritorio, orientada a capturar las solicitudes del usuario y mostrar el estado de disponibilidad.
+2. **Capa de Negocio / Lógica de Aplicación (API Backend):** Servicios y endpoints de API que centralizan la ejecución de las reglas de negocio (políticas de cancelación, márgenes de tolerancia, control de accesos y prevención de colisiones de reserva). Esta capa orquesta las comunicaciones y llamadas hacia servicios externos como la API de identidad institucional.
+3. **Capa de Datos (Persistencia):** Base de datos relacional encargada del almacenamiento y la consistencia transaccional (ACID) del estado de los espacios compartidos.
 
 ### 4.2 Atributos de calidad impuestos
 
@@ -76,20 +80,33 @@ La exclusión de cerraduras electrónicas, sensores IoT y pasarelas de pago resp
 | **Resiliencia y Desacoplamiento** | Si la API externa de "Soy León" experimenta caídas o latencias altas, el sistema debe seguir operando. | Una falla del proveedor institucional de identidad bloquearía por completo las reservaciones de todo el campus. |
 
 ### 4.3 Reglas de negocio identificadas
-* **RN-01 (Membresía Activa):** Únicamente los usuarios validados con estatus académico activo pueden crear reservaciones.
-* **RN-02 (Ventana de Tolerancia para Check-in):** El check-in se habilita al minuto 0 de la reserva y expira al minuto 10. Si al minuto 11 no hay confirmación, el sistema ejecuta la cancelación automática y devuelve el espacio al catálogo público.
-* **RN-03 (Límite de Concurrencia por Usuario):** Un estudiante solo puede tener una única reserva activa o en curso a la vez para impedir el acaparamiento.
-* **RN-04 (Inmutabilidad de la Bitácora de Auditoría):** Todo evento de reserva, confirmación o cancelación genera un registro inmutable. Los administradores solo pueden auditar los edificios asignados a su rol.
-* **RN-05 (Mecanismo de Contingencia de Identidad):** Ante la falta de respuesta de la API externa de "Soy León", el sistema activa un modo de contingencia que valida el acceso mediante el dominio de correo electrónico institucional.
+* **RN-01 (Elegibilidad de Usuario):** La creación de apartados está restringida exclusivamente a alumnos con matrícula activa y sesión validada en la plataforma.
+* **RN-02 (Cupo Máximo de Reservas Simultáneas):** Cada estudiante puede mantener únicamente una reservación activa en el sistema. Para agendar un nuevo bloque temporal, la reserva previa debe haberse completado, cancelado o liberado.
+* **RN-03 (Confirmación de Llegada y Liberación por Inasistencia):** El usuario cuenta con un margen estricto de 10 minutos a partir del inicio del horario agendado para registrar su asistencia en el sistema. Transcurrido este periodo sin confirmación (*check-in*), la reserva se anula automáticamente y el cubículo queda disponible de inmediato para el resto de la comunidad.
+* **RN-04 (Trazabilidad y Segregación de Auditoría):** Cualquier cambio de estado en un espacio (creación, confirmación, cancelación o liberación por inasistencia) genera un registro inmutable. El acceso de lectura a estos registros queda delimitado por la zona o edificio bajo la responsabilidad de cada rol administrativo.
+* **RN-05 (Autenticación en Modo de Contingencia):** Si el servicio de identidad central ("Soy León") presenta indisponibilidad o degradación, la plataforma conmuta a un mecanismo de validación alterno basado en credenciales de correo electrónico institucional, garantizando la continuidad operativa del sistema de reservas.
 
 ---
 
 ## 5. Ciclo de vida elegido
 
 ### 5.1 Modelo seleccionado
-**Modelo Iterativo e Incremental orientado a Riesgos (derivado del Proceso Unificado y Prototipado Rápido)**.
+**Metodología Ágil Incremental (Iteraciones de 1 a 2 semanas)**.
 
 ### 5.2 Justificación basada en el alcance y restricciones
-1. **Gestión de riesgos de integración externa:** La dependencia de la API de "Soy León" y las autorizaciones institucionales representan un riesgo crítico de cronograma. Un modelo iterativo permite construir un primer incremento con un mecanismo de autenticación simulado (Mock / Fallback) para avanzar en la lógica transaccional de reservas sin quedar bloqueados por aprobaciones de terceros.
-2. **Validación temprana de usabilidad móvil y concurrencia:** El flujo de reserva y *check-in* en cambios de hora exige probar la interacción en dispositivos móviles con usuarios reales desde fases tempranas, ajustando la interfaz antes de la entrega final.
-3. **Por qué no Cascada:** Un modelo secuencial lineal asume requisitos completamente fijos y congelados desde el inicio. Si se aplicara Cascada y los permisos de la API institucional se demoran o modifican en semanas avanzadas, el costo del cambio obligaría a rehacer la fase de diseño e implementación completa al final del semestre.
+
+1. **Gestión de requisitos cambiantes en el tiempo:**  
+   En un contexto escolar y de validación con usuarios reales en campus, los requisitos no pueden darse por sentados ni congelarse desde el inicio. A medida que alumnos y administradores interactúan con las primeras versiones, surgen retroalimentaciones y cambios en tolerancias de tiempo, criterios de reserva o vistas de catálogo. El enfoque ágil incremental permite asimilar estas modificaciones vuelta tras vuelta sin que representen una crisis para el cronograma.
+
+2. **Ejecución completa de actividades por iteración:**  
+   En lugar de dividir el proyecto en fases secuenciales que postergan la integración al final del semestre, cada ciclo de 1 a 2 semanas ejecuta de forma completa las cuatro actividades esenciales: **Especificar, Diseñar, Construir y Validar**. Cada iteración produce una porción de software terminado y evaluable (Incremento 1: Catálogo y consulta; Incremento 2: Reserva transaccional; Incremento 3: Módulo de *check-in* y anulación automática).
+
+3. **Software funcionando sobre documentación rígida:**  
+   Al ser una herramienta orientada a pocas pantallas clave y flujos específicos, la prioridad es contar con código que funcione y pruebe la lógica de negocio directamente en el navegador, minimizando la carga burocrática de modelos teóricos pesados.
+
+4. **Respuesta ante el cambio y mitigación de dependencias:**  
+   Frente a la dependencia de servicios externos (API "Soy León"), un ciclo ágil permite construir de inmediato un mecanismo simulado (*mock*) en las primeras iteraciones para no frenar la construcción de la lógica transaccional, integrando el servicio real cuando los accesos institucionales queden autorizados.
+
+5. **Por qué se descartan otros modelos:**
+   * **Modelo en Cascada:** Asume que todo se puede saber de antemano; cualquier cambio tardío o bloqueo técnico en la integración externa impediría llegar a tiempo con un sistema entregable.
+   * **Modelos Orientados a Riesgos (Espiral / Proceso Unificado) y Prototipado Desechable:** Fueron diseñados para proyectos de infraestructura crítica de gran envergadura o interfaces experimentales complejas; en este contexto escolar añaden una carga documental innecesaria y artefactos descartables que restan tiempo a la entrega de valor incremental.
