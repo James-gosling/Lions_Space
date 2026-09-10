@@ -91,7 +91,7 @@ El sistema desacopla sus responsabilidades para mantener modularidad, mantenibil
 ## 5. Ciclo de vida elegido
 
 ### 5.1 Modelo seleccionado
-**Metodología Ágil Incremental (Iteraciones de 1 a 2 semanas)**.
+**Metodología Ágil Incremental (Sprints de 2 semanas)**.
 
 ### 5.2 Justificación basada en el alcance y restricciones
 
